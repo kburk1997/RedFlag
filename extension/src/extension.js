@@ -1,10 +1,12 @@
 function request(message){
+		var profane=false;
+		var angry=false;
 		var API_token='xxxxxxxxxxxxxxxxxxx';
 		var data={"message": message};
 		var url='https://partner.bark.us/api/v1/messages';
 		//console.log(url);
 		//run through API
-		$.ajax({
+		/*$.ajax({
 			url: url,
 			method: 'POST',
 			data: data,
@@ -15,7 +17,24 @@ function request(message){
 			success: function(data){
 				console.log(data);
 			}
-		});
+		});*/
+		if (message){
+			//Get profanity
+			$.getJSON("https://raw.githubusercontent.com/ChaseFlorell/jQuery.ProfanityFilter/master/swearWords.json", function(json){
+				//console.log(json);
+				json.forEach(function(profanity){
+					var str="/"+profanity+"/i";
+					//console.log(message.search(profanity));
+					if (message.search(profanity)!=-1){
+						console.log("This tweet has a bad word!");
+						profane=true;
+					}
+				});
+			});
+		}
+
+		//Do sentiment analysis here
+		
 }
 
 function process(element){
@@ -26,7 +45,7 @@ function process(element){
 	//console.log(message_holder);
 	if(message_holder != null && message_holder!=undefined){
 		var message=message_holder.innerText;
-		console.log(message);
+		//console.log(message);
 		//Replace this token with the actual token
 		request(message);
 
