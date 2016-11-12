@@ -22,6 +22,20 @@
     "chrome_style": true,
     "page": "options/options.html"
   },
+
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.twitter.com/*",
+        "http://*.twitter.com/*"
+      ],
+      "js": [
+        "jquery/jquery.min.js",
+        "src/extension.js"
+      ]
+    }
+  ],
+
   "short_name": "RedFlag"
 
   /*// Pick one (or none)
