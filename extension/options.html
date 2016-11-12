@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>RedFlag Options</title>
+  <style>
+    body: { padding: 10px; }
+  </style>
+</head>
+
+<body>
+  Mode:
+  <select id="mode">
+   <option value="hide">Hide Possible Harassment</option>
+   <option value="highlight">Highlight Possible Harassment</option>
+  </select>
+
+  <div id="info">
+    <ul>
+    <li><b>Hide Possible Harassment</b>: Replaces harassing messages with a message saying "this may be harassment" and an option to show the offending content.</li>
+
+    <li><b>Highlight Possible Harassment</b>: Highlights harassing messages with a bright red background.</li>
+    </ul>
+  </div>
+
+  <div id="status"></div>
+  <button id="save">Save</button>
+
+  <script src="options.js"></script>
+</body>
+</html>

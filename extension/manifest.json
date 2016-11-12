@@ -14,7 +14,8 @@
   //Give permission to access Bark API
   "permissions": [
     "tabs", 
-    "https://partner.bark.us/"
+    "https://partner.bark.us/",
+    "storage"
   ],
   "options_page": "options.html",
   "options_ui": {
