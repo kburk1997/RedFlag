@@ -2,7 +2,7 @@ function request(message){
 		var profane=false;
 		var angry=false;
 		var API_token='xxxxxxxxxxxxxx';
-		var data={'message:'message};
+		var data={'message': message};
 		var url='https://westus.api.cognitive.microsoft.com/text/analytics/v2.0/sentiment';
 		//console.log(url);
 		//run through API
