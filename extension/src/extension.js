@@ -1,6 +1,6 @@
 function process(element){
 
-	var tweet=$(element).children().children()[1]
+	var tweet=$(element).children().children()[1];
 	console.log(tweet);
 }
 
