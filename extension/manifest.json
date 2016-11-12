@@ -36,8 +36,11 @@
     }
   ],
 
-  "short_name": "RedFlag"
+  "short_name": "RedFlag",
 
+  "background": {
+    "page": "src/background.html"
+  },
   /*// Pick one (or none)
   "browser_action": {...},
   "page_action": {...},

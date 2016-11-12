@@ -1,9 +1,11 @@
 function request(message){
 		var profane=false;
 		var angry=false;
-		var API_token='xxxxxxxxxxxxxxxxxxx';
-		var data={"message": message};
-		var url='https://partner.bark.us/api/v1/messages';
+		var API_token='xxxxxxxxxxxxxx';
+		var data={"documents": [
+
+		]};
+		var url='https://westus.api.cognitive.microsoft.com/text/analytics/v2.0/sentiment';
 		//console.log(url);
 		//run through API
 		/*$.ajax({
@@ -11,13 +13,18 @@ function request(message){
 			method: 'POST',
 			data: data,
 			headers:{
-				'Content-Type':'application/json; charset=utf-8',
-				'X-Token-Auth': API_token
+				'Ocp-Apim-Subscription-Key': API_token,
+				'Content-Type': 'application/json',
+				'Accept': 'application/json'
 			},
 			success: function(data){
 				console.log(data);
 			}
 		});*/
+
+		//Call background.js to make API call
+
+
 		if (message){
 			//Get profanity
 			$.getJSON("https://raw.githubusercontent.com/ChaseFlorell/jQuery.ProfanityFilter/master/swearWords.json", function(json){
@@ -32,6 +39,8 @@ function request(message){
 				});
 			});
 		}
+
+		//Then check if directed at person
 
 		//Do sentiment analysis here
 		
