@@ -1,4 +1,22 @@
-
+function request(message){
+		var API_token='xxxxxxxxxxxxxxxxxxx';
+		var data={"message": message};
+		var url='https://partner.bark.us/api/v1/messages';
+		//console.log(url);
+		//run through API
+		$.ajax({
+			url: url,
+			method: 'POST',
+			data: data,
+			headers:{
+				'Content-Type':'application/json; charset=utf-8',
+				'X-Token-Auth': API_token
+			},
+			success: function(data){
+				console.log(data);
+			}
+		});
+}
 
 function process(element){
 
@@ -9,6 +27,9 @@ function process(element){
 	if(message_holder != null && message_holder!=undefined){
 		var message=message_holder.innerText;
 		console.log(message);
+		//Replace this token with the actual token
+		request(message);
+
 	}
 	
 }
@@ -21,6 +42,8 @@ function process(element){
 });*/
 
 $(document).ready(function(){
+
+	var timeout=setTimeout(request, 300);
 	//console.log("You are on Twitter!");
 	var stream=$(".stream-items");
 	console.log(stream);
