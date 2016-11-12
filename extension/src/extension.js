@@ -33,13 +33,16 @@ $(document).ready(function(){
         attributes: false,
         characterData: false
     };
-	var insertedNodes = [];
+	//var insertedNodes = [];
 	var observer = new MutationObserver(function(mutations) {
 	 mutations.forEach(function(mutation) {
-	   for (var i = 0; i < mutation.addedNodes.length; i++)
-	     insertedNodes.push(mutation.addedNodes[i]);
+	   for (var i = 0; i < mutation.addedNodes.length; i++){
+	     //insertedNodes.push(mutation.addedNodes[i]);
+	     process(mutation.addedNodes[i]);
+	   }
 	 })
 	});
-	observer.observe(stream, config);
-	console.log(insertedNodes);
+	observer.observe(stream.get(0), config);
+
+	//console.log(insertedNodes);
 });
