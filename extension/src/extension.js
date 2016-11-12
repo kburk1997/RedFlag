@@ -2,9 +2,7 @@ function request(message){
 		var profane=false;
 		var angry=false;
 		var API_token='xxxxxxxxxxxxxx';
-		var data={"documents": [
-
-		]};
+		var data={'message:'message};
 		var url='https://westus.api.cognitive.microsoft.com/text/analytics/v2.0/sentiment';
 		//console.log(url);
 		//run through API
@@ -23,6 +21,11 @@ function request(message){
 		});*/
 
 		//Call background.js to make API call
+		chrome.tabs.executeScript(tab.id, {
+		    code: 'var data = ' + JSON.stringify(data)
+		}, function() {
+		    chrome.tabs.executeScript(tab.id, {file: 'background.js'});
+		});
 
 
 		if (message){
