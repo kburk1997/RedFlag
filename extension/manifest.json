@@ -7,7 +7,9 @@
   // Recommended
   "default_locale": "en",
   "description": "Gives you the option to hide or highlight potential cyberbullying.",
-  "icons": {"icon.png"},
+  "icons": {"16": "icon-16.png",
+           "48": "icon-48.png",
+          "128": "icon-128.png"},
   "author": "Kathleen Burkhardt, Robin Kuhns",
   //Give permission to access Bark API
   "permissions": [
