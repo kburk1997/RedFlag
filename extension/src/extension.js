@@ -5,6 +5,10 @@ function tokenize(text) {
   return text.toLowerCase().replace(/\s{2,}/g, " ").replace(/[^a-z ]/g, "").split(" ");
 }
 
+function tokenize_no_split(text) {
+  return text.toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").replace(/\s{2,}/g, " ").replace(/[^a-z ]/g, "");
+}
+
 function symbol(score) {
   if (score > 0) {
     return "POSITIVE";
@@ -39,128 +43,94 @@ function getTarget() {
   });
 }
 
-
-function request(message, tweet){
-		var profane=false;
-		var angry=false;
-		var directed=false;
-		var threat=false;
-		var API_token='xxxxxxxxxxxxx';
-		var data={'documents': [
-			{
-				"language": "en",
-				"id":"a",
-				"text": message
+function check_json(message, json_url){
+//Get threats
+	var index=-1;
+	return $.getJSON(json_url, function(json){
+		//console.log(json);
+		json.forEach(function(phrase){
+			index=message.toLowerCase().search(phrase);
+			//console.log(message);
+			//console.log("Index of "+phrase+": "+index);
+			if (index!=-1){
+				return true;			
 			}
-		]};
-		var url='https://westus.api.cognitive.microsoft.com/text/analytics/v2.0/sentiment';
+		});
+
+		return false;
+
+	});
+}
+
+
+function is_profane(message){
+	return check_json(message, "https://raw.githubusercontent.com/ChaseFlorell/jQuery.ProfanityFilter/master/swearWords.json");
+}
+
+function is_angry(message){
+	return (sentiment(message)=="NEGATIVE");
+}
+
+function is_directed(message){
+	return (message.search("@")!=-1);
+}
+
+function is_threat(message){
+	//Get threats
+	return check_json(message, "https://dl.dropboxusercontent.com/u/85125013/threats.json");
+}
+
+function is_exception(message){
+	return check_json(message, "https://dl.dropboxusercontent.com/u/85125013/exceptions.json");
+
+}
+
+
+function is_bullying(message){
+	//console.log(is_threat(message));
+
+	//message=tokenize_no_split(message);
+	//console.log(message);
+
+	var profane=is_profane(message);
+	var angry=is_angry(message);
+	var directed=is_directed(message);
+	//console.log(is_threat(message));
+	var threat=is_threat(message);
+
+	var exception=is_exception(message);
+
+	console.log("Profane: "+profane);
+	console.log("Angry: "+angry);
+	console.log("Directed: "+directed);
+	console.log("Threat: "+threat);
+	//console.log(message);
+	console.log(exception);
+	console.log(exception.valueOf());
+
+	return ((profane && angry) || (angry && directed) || (profane && directed) || threat) /*&& (exception==false)*/;
+
+}
+
+
+function request(message){
+
 		//console.log(url);
 		//run through API
 		
 
 		//Call background.js
 
-		
-
-
 		if (message!= null && message != undefined){
-			console.log(message);
+			return is_bullying(message);
 
-			 /*$.ajax({
-	            url: "https://westus.api.cognitive.microsoft.com/text/analytics/v2.0/sentiment",
-	            beforeSend: function(xhrObj){
-	                // Request headers
-	                xhrObj.setRequestHeader("Content-Type","application/json");
-	                xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key",API_token);
-	                xhrObj.setRequestHeader("Accept","application/json");
-	            
-	            },
-	            type: "POST",
-	            // Request body
-	            data: data
-	        })
-	        .done(function(data) {
-	            alert("success");
-	            console.log(data);
-	        })
-	        .fail(function() {
-	            alert("error");
-	        });
-
-
-			$.ajax({
-				url: url,
-				method: 'POST',
-				data: data,
-				headers:{
-					'Ocp-Apim-Subscription-Key': API_token,
-					'Content-Type': 'application/json',
-					'Accept': 'application/json'
-				},
-				success: function(data){
-					console.log(data);
-				}
-			});*/
-
-			/*chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
-			  console.log(tabs[0]);
-
-			  chrome.tabs.executeScript(tabs[0].id, {
-				    code: 'var data = ' + JSON.stringify(data)
-				}, function() {
-				    chrome.tabs.executeScript(tab.id, {file: 'background.js'});
-				});
-
-			});*/
-			
-			if(sentiment(message)=="NEGATIVE"){
-				console.log("ANGERY");
-
-
-				angry= true;
-			}
-
-			//Get profanity
-			$.getJSON("https://raw.githubusercontent.com/ChaseFlorell/jQuery.ProfanityFilter/master/swearWords.json", function(json){
-				//console.log(json);
-				json.forEach(function(profanity){
-					var str="/"+profanity+"/i";
-					//console.log(message.search(profanity));
-					if (message.toLowerCase().search(profanity)!=-1){
-						console.log("This tweet has a bad word!");
-						if(!profane){
-							profane= true;
-						}						
-
-					}
-				});
-			});
-
-			//Get threats
-			$.getJSON("https://dl.dropboxusercontent.com/u/85125013/threats.json", function(json){
-				//console.log(json);
-				json.forEach(function(threat){
-					//console.log(message.search(profanity));
-					if (message.toLowerCase().search(threat)!=-1){
-						console.log("This tweet has a threat!");
-						if(!threat){
-							threat= true;
-							return true;
-						}						
-
-					}
-				});
-			});
-
-			if(message.search("@")!=-1){
-				directed=true;
-			}
 		}
+
+		return null;
 
 		//Then check if directed at person
 
 		//Do sentiment analysis here
-		return (profane && angry) || (angry && directed) || (profane && directed) || threat;
 }
 
 function process(element){
@@ -173,7 +143,9 @@ function process(element){
 		var message=message_holder.innerText;
 		//console.log(message);
 		//Replace this token with the actual token
-		var profane =request(message, tweet);
+		var profane =request(message);
+		var threat=is_threat(message);
+		console.log(threat);
 		if (profane==true){
 
 			//Read settings
@@ -193,8 +165,8 @@ function process(element){
 
 					//Get tweet data
 					var header=$($(tweet).children()[0]);
-					console.log(header);
-					console.log(header.children()[0]);
+					//console.log(header);
+					//console.log(header.children()[0]);
 					var twitter_name="";
 
 
@@ -227,11 +199,11 @@ function process(element){
 
 $(document).ready(function(){
 
-	var timeout=setTimeout(request, 300);
+	//var timeout=setTimeout(request, 300);
 	//console.log("You are on Twitter!");
 	var stream=$(".stream-items");
-	console.log(stream);
-	console.log(stream.parent());
+	//console.log(stream);
+	//console.log(stream.parent());
 	var tweets=Array.from($(stream.children()));
 	tweets.forEach(process);
 	var config = {
