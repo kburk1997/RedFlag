@@ -1,4 +1,4 @@
-function request(message){
+function request(message, tweet){
 		var profane=false;
 		var angry=false;
 		var API_token='xxxxxxxxxxxxxx';
@@ -20,15 +20,26 @@ function request(message){
 			}
 		});*/
 
-		//Call background.js to make API call
-		chrome.tabs.executeScript(tab.id, {
-		    code: 'var data = ' + JSON.stringify(data)
-		}, function() {
-		    chrome.tabs.executeScript(tab.id, {file: 'background.js'});
-		});
+		//Call background.js
+
+		
 
 
 		if (message){
+
+			/*chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
+			  console.log(tabs[0]);
+
+			  chrome.tabs.executeScript(tabs[0].id, {
+				    code: 'var data = ' + JSON.stringify(data)
+				}, function() {
+				    chrome.tabs.executeScript(tab.id, {file: 'background.js'});
+				});
+
+			});*/
+			
+
+
 			//Get profanity
 			$.getJSON("https://raw.githubusercontent.com/ChaseFlorell/jQuery.ProfanityFilter/master/swearWords.json", function(json){
 				//console.log(json);
@@ -37,16 +48,29 @@ function request(message){
 					//console.log(message.search(profanity));
 					if (message.search(profanity)!=-1){
 						console.log("This tweet has a bad word!");
-						profane=true;
+						if(!profane){
+
+							//Construct HTML
+
+							$(tweet).append("<p>This tweet might be harassment</p>");
+							var table="<table><tr><td><a href=\"\">Report</a></td><a href=\"\">Message OP</a><td></td><td></td></tr></table>";
+							$(tweet).append(table);
+
+
+							profane=true;
+						}						
+
 					}
 				});
 			});
+
+			
 		}
 
 		//Then check if directed at person
 
 		//Do sentiment analysis here
-		
+		return profane;
 }
 
 function process(element){
@@ -59,8 +83,11 @@ function process(element){
 		var message=message_holder.innerText;
 		//console.log(message);
 		//Replace this token with the actual token
-		request(message);
-
+		var profane =request(message, tweet);
+		if (profane){
+			console.log("PROFANE VERY PROFANE");
+		}
+		
 	}
 	
 }

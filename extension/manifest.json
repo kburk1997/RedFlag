@@ -15,7 +15,8 @@
   "permissions": [
     "tabs", 
     "https://partner.bark.us/",
-    "storage"
+    "storage",
+    "background"
   ],
   "options_page": "options.html",
   "options_ui": {
