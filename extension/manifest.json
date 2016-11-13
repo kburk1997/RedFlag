@@ -14,9 +14,10 @@
   //Give permission to access Bark API
   "permissions": [
     "tabs", 
-    "https://partner.bark.us/",
+    "https://partner.bark.us/*",
     "storage",
-    "background"
+    "background",
+    "https://westus.api.cognitive.microsoft.com/*"
   ],
   "options_page": "options.html",
   "options_ui": {
