@@ -53,6 +53,8 @@ function request(message, tweet){
 							//Construct HTML
 
 							$(tweet).append("<p>This tweet might be harassment</p>");
+
+							//Check if a user was 
 							var table="<table><tr><td><a href=\"\">Report</a></td><a href=\"\">Message OP</a><td></td><td></td></tr></table>";
 							$(tweet).append(table);
 
