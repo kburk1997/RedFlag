@@ -100,13 +100,13 @@ function is_bullying(message){
 
 	var exception=is_exception(message);
 
-	console.log("Profane: "+profane);
-	console.log("Angry: "+angry);
-	console.log("Directed: "+directed);
-	console.log("Threat: "+threat);
+	//console.log("Profane: "+profane);
+	//console.log("Angry: "+angry);
+	//console.log("Directed: "+directed);
+	//console.log("Threat: "+threat);
 	//console.log(message);
-	console.log(exception);
-	console.log(exception.valueOf());
+	//console.log(exception);
+	//console.log(exception.valueOf());
 
 	return ((profane && angry) || (angry && directed) || (profane && directed) || threat) /*&& (exception==false)*/;
 
@@ -145,7 +145,7 @@ function process(element){
 		//Replace this token with the actual token
 		var profane =request(message);
 		var threat=is_threat(message);
-		console.log(threat);
+		//console.log(threat);
 		if (profane==true){
 
 			//Read settings
