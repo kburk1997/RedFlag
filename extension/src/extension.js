@@ -1,7 +1,7 @@
 function request(message, tweet){
 		var profane=false;
 		var angry=false;
-		var API_token='xxxxxxxxxxxxxx';
+		var API_token='xxxxxxxxx';
 		var data={'message': message};
 		var url='https://westus.api.cognitive.microsoft.com/text/analytics/v2.0/sentiment';
 		//console.log(url);
@@ -54,8 +54,21 @@ function request(message, tweet){
 
 							$(tweet).append("<p>This tweet might be harassment</p>");
 
+							//Get tweet data
+							var header=$($(tweet).children()[0]);
+							console.log(header);
+							console.log(header.children()[0]);
+							var twitter_name="";
+
+
+							var message_link="";
+
+							var report_link="";
+
+							//console.log($(tweet));
+
 							//Check if a user was 
-							var table="<table><tr><td><a href=\"\">Report</a></td><a href=\"\">Message OP</a><td></td><td></td></tr></table>";
+							var table="<a href=\"http://s.codepen.io/kburk97/debug/woGqPM\">Your Options</a>";
 							$(tweet).append(table);
 
 
