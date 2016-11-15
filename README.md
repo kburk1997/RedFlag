@@ -9,4 +9,4 @@ Whenever you are on Twitter, the Chrome extension will load. Depending on the se
 First, we use sentiment analysis on each tweet to determine if it has a negative sentiment. Then, we scan the tweet for profanity, threats, and user mentions. Threats automatically flag the tweet for harassment. If there are no threats detected, the amount of profanity, the sentiment of the tweet, and any user mentions determine whether the tweet is harassment.
 
 ##Where can I download this?
-The app is available on the Chrome Web Store here.
+The app is available on the Chrome Web Store [here](https://chrome.google.com/webstore/detail/redflag/icfcofbhpapplokfmbgllcfehkbaadap).
